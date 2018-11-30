@@ -124,7 +124,7 @@ func (woc *wfOperationCtx) createWorkflowPod(nodeName string, mainCtr apiv1.Cont
 			},
 		},
 		Spec: apiv1.PodSpec{
-			RestartPolicy: apiv1.RestartPolicyNever,
+			RestartPolicy: woc.wf.Spec.RestartPolicy,
 			Containers: []apiv1.Container{
 				mainCtr,
 			},
@@ -132,6 +132,7 @@ func (woc *wfOperationCtx) createWorkflowPod(nodeName string, mainCtr apiv1.Cont
 			ActiveDeadlineSeconds: tmpl.ActiveDeadlineSeconds,
 			ServiceAccountName:    woc.wf.Spec.ServiceAccountName,
 			ImagePullSecrets:      woc.wf.Spec.ImagePullSecrets,
+			SchedulerName:         woc.wf.Spec.SchedulerName,
 		},
 	}
 	if woc.controller.Config.InstanceID != "" {
