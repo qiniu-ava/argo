@@ -24,8 +24,9 @@ override LDFLAGS += \
   -X ${PACKAGE}.gitTreeState=${GIT_TREE_STATE}
 
 # docker image publishing options
+ifeq (${IMAGE_TAG},)
 IMAGE_TAG=$(shell date -u '+%Y%m%d')-$(shell git rev-parse --short HEAD)
-
+endif
 ifneq (${IMAGE_NAMESPACE},)
 override LDFLAGS += -X ${PACKAGE}/cmd/argo/commands.imageNamespace=${IMAGE_NAMESPACE}
 endif
