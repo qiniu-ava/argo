@@ -1,5 +1,8 @@
 FROM debian:9.5-slim
 
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+
 RUN apt-get update && apt-get install -y \
     git \
     make \
@@ -13,7 +16,9 @@ ENV GO_VERSION 1.10.3
 ENV GO_ARCH amd64
 ENV GOPATH /root/go
 ENV PATH ${GOPATH}/bin:/usr/local/go/bin:${PATH}
-RUN wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz && \
+RUN export http_proxy=${HTTP_PROXY} && \
+    export https_proxy=${HTTPS_PROXY} && \
+    wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz && \
     tar -C /usr/local/ -xf /go${GO_VERSION}.linux-${GO_ARCH}.tar.gz && \
     rm /go${GO_VERSION}.linux-${GO_ARCH}.tar.gz && \
     wget https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -O /usr/local/bin/dep && \
