@@ -24,11 +24,11 @@ override LDFLAGS += \
   -X ${PACKAGE}.gitTreeState=${GIT_TREE_STATE}
 
 # docker image publishing options
-DOCKER_PUSH=false
-IMAGE_TAG=latest
+# DOCKER_PUSH=false
+# IMAGE_TAG=latest
 
 ifneq (${GIT_TAG},)
-IMAGE_TAG=${GIT_TAG}
+# IMAGE_TAG=${GIT_TAG}
 override LDFLAGS += -X ${PACKAGE}.gitTag=${GIT_TAG}
 endif
 ifneq (${IMAGE_NAMESPACE},)
@@ -54,7 +54,8 @@ all: cli cli-image controller-image executor-image
 
 .PHONY: builder
 builder:
-	docker build -t ${BUILDER_IMAGE} -f Dockerfile-builder .
+	docker build --build-arg HTTP_PROXY=${HTTP_PROXY} --build-arg HTTPS_PROXY=${HTTPS_PROXY} \
+		-t ${BUILDER_IMAGE} -f Dockerfile-builder .
 
 .PHONY: cli
 cli:
